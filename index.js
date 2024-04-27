@@ -45,6 +45,12 @@ async function run() {
       res.send(result);
       console.log(data);
     });
+    app.get("/products/:email", async (req, res) => {
+      const email = req.params.email;
+      console.log(email);
+      const result = await productsCollection.find({ email: email }).toArray();
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
