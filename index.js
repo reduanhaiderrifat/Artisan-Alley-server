@@ -51,7 +51,30 @@ async function run() {
       const result = await productsCollection.find({ email: email }).toArray();
       res.send(result);
     });
-
+    app.put("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upset: true };
+      const updateProduct = req.body;
+      const product = {
+        $set: {
+          category: updateProduct.category,
+          rating: updateProduct.rating,
+          price: updateProduct.price,
+          time: updateProduct.time,
+          photo: updateProduct.photo,
+          subcategory: updateProduct.subcategory,
+          stockStatus: updateProduct.stockStatus,
+          customization: updateProduct.customization,
+        },
+      };
+      const result = await productsCollection.updateOne(
+        filter,
+        product,
+        options
+      );
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log(
