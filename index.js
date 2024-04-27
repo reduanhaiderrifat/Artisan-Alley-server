@@ -43,12 +43,13 @@ async function run() {
       data.timestamp = new Date();
       const result = await productsCollection.insertOne(data);
       res.send(result);
-      console.log(data);
     });
-    app.get("/products/:email", async (req, res) => {
-      const email = req.params.email;
-      console.log(email);
-      const result = await productsCollection.find({ email: email }).toArray();
+    app.get("/user/:user_email", async (req, res) => {
+      const email = req.params.user_email;
+
+      const result = await productsCollection
+        .find({ user_email: email })
+        .toArray();
       res.send(result);
     });
     app.put("/products/:id", async (req, res) => {
