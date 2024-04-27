@@ -25,12 +25,28 @@ async function run() {
     const productsCollection = client
       .db("art&craftDB")
       .collection("productsCollection");
+    const paintingCollection = client
+      .db("art&craftDB")
+      .collection("paintingCollection");
     // methods start
 
     app.get("/products", async (req, res) => {
       const cursor = productsCollection.find();
       const products = await cursor.toArray();
       res.send(products);
+    });
+    app.get("/paintings", async (req, res) => {
+      const cursor = paintingCollection.find();
+      const paintings = await cursor.toArray();
+      res.send(paintings);
+    });
+    app.get("/products/:category", async (req, res) => {
+      const category = req.params.category;
+      console.log(category);
+      const result = await productsCollection
+        .find({ category: category })
+        .toArray();
+      res.send(result);
     });
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
@@ -46,7 +62,6 @@ async function run() {
     });
     app.get("/user/:user_email", async (req, res) => {
       const email = req.params.user_email;
-
       const result = await productsCollection
         .find({ user_email: email })
         .toArray();
