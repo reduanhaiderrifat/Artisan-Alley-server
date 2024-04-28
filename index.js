@@ -5,7 +5,12 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://arts-crafts-cb747.web.app"],
+    credentials: true,
+  })
+);
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.u9zrvau.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -39,14 +44,6 @@ async function run() {
       const cursor = paintingCollection.find();
       const paintings = await cursor.toArray();
       res.send(paintings);
-    });
-    app.get("/products/:category", async (req, res) => {
-      const category = req.params.category;
-      console.log(category);
-      const result = await productsCollection
-        .find({ category: category })
-        .toArray();
-      res.send(result);
     });
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
